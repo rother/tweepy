@@ -216,7 +216,7 @@ User methods
 Direct Message Methods
 ----------------------
 
-.. method:: API.direct_messages([since_id], [max_id], [count], [page])
+.. method:: API.direct_messages([since_id], [max_id], [count], [page], [full_text])
 
    Returns direct messages sent to the authenticating user.
 
@@ -224,10 +224,20 @@ Direct Message Methods
    :param max_id: |max_id|
    :param count: |count|
    :param page: |page|
+   :param full_text: |full_text|
    :rtype: list of :class:`DirectMessage` objects
 
 
-.. method:: API.sent_direct_messages([since_id], [max_id], [count], [page])
+.. method:: API.get_direct_message([id], [full_text])
+
+   Returns a specific direct message.
+
+   :param id: |id|
+   :param full_text: |full_text|
+   :rtype: :class:`DirectMessage` object
+
+
+.. method:: API.sent_direct_messages([since_id], [max_id], [count], [page], [full_text])
 
    Returns direct messages sent by the authenticating user.
 
@@ -235,6 +245,7 @@ Direct Message Methods
    :param max_id: |max_id|
    :param count: |count|
    :param page: |page|
+   :param full_text: |full_text|
    :rtype: list of :class:`DirectMessage` objects
 
 
@@ -777,3 +788,29 @@ Geo Methods
    Given *id* of a place, provide more details about that place.
 
    :param id: Valid Twitter ID of a location.
+
+:mod:`tweepy.error` --- Exceptions
+==================================
+
+The exceptions are available in the ``tweepy`` module directly,
+which means ``tweepy.error`` itself does not need to be imported. For
+example, ``tweepy.error.TweepError`` is available as ``tweepy.TweepError``.
+
+.. exception:: TweepError
+   
+   The main exception Tweepy uses. Is raised for a number of things.
+   
+   When a ``TweepError`` is raised due to an error Twitter responded with,
+   the error code (`as described in the API documentation
+   <https://dev.twitter.com/overview/api/response-codes>`_) can be accessed
+   at ``TweepError.message[0]['code']``. Note, however, that ``TweepError``\ s
+   also may be raised with other things as message (for example plain
+   error reason strings).
+
+.. exception:: RateLimitError
+   
+   Is raised when an API method fails due to hitting Twitter's rate
+   limit. Makes for easy handling of the rate limit specifically.
+   
+   Inherits from :exc:`TweepError`, so ``except TweepError`` will
+   catch a ``RateLimitError`` too.
